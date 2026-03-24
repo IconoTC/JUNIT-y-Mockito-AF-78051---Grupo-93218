@@ -1,4 +1,4 @@
-# Curso de TTD con Junit y Mockito
+# Curso de Junit y Mockito
 
 ## Instalación
 
