@@ -1,4 +1,4 @@
-package com.example.test.utils;
+package com.example.test.annotation;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;

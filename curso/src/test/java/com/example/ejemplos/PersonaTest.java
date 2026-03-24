@@ -12,7 +12,7 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
-import com.example.test.utils.Smoke;
+import com.example.test.annotation.Smoke;
 
 class PersonaTest {
 
