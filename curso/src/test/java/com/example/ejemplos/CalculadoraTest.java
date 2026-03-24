@@ -10,12 +10,14 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 @DisplayName("Pruebas de la clase Calculadora")
 @DisplayNameGeneration(ReplaceUnderscores.class)
 class CalculadoraTest {
 	Calculadora calculadora;
-	
+
 	@BeforeEach
 	void setUp() throws Exception {
 		calculadora = new Calculadora();
@@ -55,12 +57,43 @@ class CalculadoraTest {
 			}
 			
 		}
+		
 		@Nested
 		@DisplayName("Casos invalidos")
 		class KO {
 			
 		}
 		
+	}
+	@Nested
+	@DisplayName("Método Resta")
+	class RestaTest {
+		@Nested
+		@DisplayName("Casos validos")
+		class OK {
+			@ParameterizedTest(name = "Caso {index} => {0} - {1} = {2}")
+			@CsvSource({
+				"1,1,0",
+				"1,-1,2",
+				"-2,1,-3",
+				"-3,-4,1",
+				"0,0,0",
+				"0,1,-1",
+				})
+			@DisplayName("Resta dos entero")
+			void RestaEnteros(int operando1, int operando2, int resultado) {
+				assertEquals(resultado, calculadora.resta(operando1, operando2));
+			}
+			@ParameterizedTest(name = "Caso {index} => {0} - {1} = {2}")
+			@CsvSource({
+				"2,1,1",
+				"1,0.9,0.1",
+				})
+			@DisplayName("Resta dos reales")
+			void RestaReales(double operando1, double operando2, double resultado) {
+				assertEquals(resultado, calculadora.resta(operando1, operando2));
+			}
+		}
 	}
 	@Nested
 	@DisplayName("Método Divide")
