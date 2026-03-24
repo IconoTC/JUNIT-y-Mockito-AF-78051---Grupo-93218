@@ -35,10 +35,10 @@ public class Persona {
 	public void setApellidos(String apellidos) {
 		this.apellidos = apellidos;
 	}
-	public LocalDate getfNacimiento() {
+	public LocalDate getFNacimiento() {
 		return fNacimiento;
 	}
-	public void setfNacimiento(LocalDate fNacimiento) {
+	public void setFNacimiento(LocalDate fNacimiento) {
 		this.fNacimiento = fNacimiento;
 	}
 
