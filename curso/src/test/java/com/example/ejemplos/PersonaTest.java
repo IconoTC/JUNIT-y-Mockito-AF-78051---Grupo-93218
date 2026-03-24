@@ -10,16 +10,19 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
+import com.example.test.utils.Smoke;
+
 class PersonaTest {
 
 	@Test
+	@Smoke
 	void CrearPersona() {
 		var p = new Persona(0, "Pepito", "Grillo", null);
 		
 		// assertEquals(new Persona(0, "Pepito", "Grilloooo", null), p);
 		assertNotNull(p);
 		assertAll("Persona", 
-				() -> assertEquals(10, p.getId()),
+				() -> assertEquals(0, p.getId()),
 				() -> assertEquals("Pepito", p.getNombre(), "nombre"),
 				() -> assertEquals("Grillo", p.getApellidos(), "apellidos"),
 				() -> assertNull(p.getfNacimiento())

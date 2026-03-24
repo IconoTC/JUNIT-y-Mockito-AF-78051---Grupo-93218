@@ -1,20 +1,37 @@
 package com.example.ejemplos;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
+import static org.junit.jupiter.api.DynamicTest.dynamicTest;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
+import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import com.example.test.utils.Smoke;
+
 @DisplayName("Pruebas de la clase Calculadora")
 @DisplayNameGeneration(ReplaceUnderscores.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class CalculadoraTest {
 	Calculadora calculadora;
 
@@ -25,6 +42,7 @@ class CalculadoraTest {
 
 	@Nested
 	@DisplayName("Método Suma")
+	@Order(1)
 	class SumaTest {
 		@Nested
 		@DisplayName("Casos validos")
@@ -65,8 +83,10 @@ class CalculadoraTest {
 		}
 		
 	}
+	
 	@Nested
 	@DisplayName("Método Resta")
+	@Order(10)
 	class RestaTest {
 		@Nested
 		@DisplayName("Casos validos")
@@ -81,6 +101,8 @@ class CalculadoraTest {
 				"0,1,-1",
 				})
 			@DisplayName("Resta dos entero")
+			//@Tag("smoke")
+			@Smoke
 			void RestaEnteros(int operando1, int operando2, int resultado) {
 				assertEquals(resultado, calculadora.resta(operando1, operando2));
 			}
@@ -95,16 +117,19 @@ class CalculadoraTest {
 			}
 		}
 	}
+	
 	@Nested
 	@DisplayName("Método Divide")
+	@Order(40)
 	class DivideTest {
 		@Nested
 		@DisplayName("Casos validos")
+		@Tag("smoke")
 		class OK {
 			@Test
 			void divideDosEnteros() {
 				assertEquals(1, (new Calculadora()).divide(3, 2));
-//				assumeFalse(true, "Prueba a medias");
+				assumeFalse(true, "Prueba a medias");
 			}
 			@Test
 //			@Disabled
@@ -141,6 +166,33 @@ class CalculadoraTest {
 			
 		}
 		
+	}
+	
+	@TestFactory
+	@Order(100)
+	Collection<DynamicTest> testFactory() {
+	    List<DynamicTest> testBattery = new ArrayList<DynamicTest>();
+	    DynamicTest testKO = dynamicTest("Should fail", () -> assertTrue(false));
+	    DynamicTest testOK = dynamicTest("Should pass", () -> assertTrue(true));
+	    int state = 1; // entity.getState();
+	    boolean rslt = false; // entity.isEnabled();
+	    if (rslt)
+	        testBattery.add(dynamicTest("Enabled", () -> assertTrue(true)));
+	    else
+	        testBattery.add(dynamicTest("Disabled", () -> assertTrue(true)));
+	    switch (state) {
+	    case 1:
+	        testBattery.add(testOK);
+	        break;
+	    case 2:
+	        testBattery.add(testKO);
+	        break;
+	    case 3:
+	        testBattery.add(testOK);
+	        testBattery.add(testKO);
+	        break;
+	    }
+	    return testBattery;
 	}
 
 }
