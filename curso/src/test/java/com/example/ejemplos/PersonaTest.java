@@ -18,7 +18,7 @@ class PersonaTest {
 
 	@Test
 	@Smoke
-	void CrearPersona() {
+	void Crear_Persona() {
 		var actual = new Persona(0, "Pepito", "Grillo", null);
 		
 		// assertEquals(new Persona(0, "Pepito", "Grilloooo", null), actual);
