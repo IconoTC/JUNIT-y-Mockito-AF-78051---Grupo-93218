@@ -74,7 +74,6 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.5.5</version>
 			</plugin>
-<!--
 			<plugin>
 				<groupId>org.pitest</groupId>
 				<artifactId>pitest-maven</artifactId>
@@ -87,7 +86,6 @@
 					</dependency>
 				</dependencies>
 			</plugin>
--->
 			<plugin>
 				<groupId>org.sonarsource.scanner.maven</groupId>
 				<artifactId>sonar-maven-plugin</artifactId>

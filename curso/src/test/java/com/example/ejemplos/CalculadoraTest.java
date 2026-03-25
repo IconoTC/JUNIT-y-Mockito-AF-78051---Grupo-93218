@@ -1,5 +1,6 @@
 package com.example.ejemplos;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -11,6 +12,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.lang.reflect.InvocationTargetException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -253,6 +255,15 @@ class CalculadoraTest {
 				break;
 			}
 			return testBattery;
+		}
+		@Test
+		@DisplayName("Probar métodos no determinista")
+		void tempodependiente() {
+			assertAll("Edades",
+					() -> assertEquals(25, calculadora.edad(LocalDate.of(2000, 03, 26)), "aun no ha cumplido años"),
+					() -> assertEquals(26, calculadora.edad(LocalDate.of(2000, 03, 25)), "hoy cumple años"),
+					() -> assertEquals(26, calculadora.edad(LocalDate.of(2000, 03, 24)), "ya ha cumplido años")
+					);
 		}
 	}
 }
