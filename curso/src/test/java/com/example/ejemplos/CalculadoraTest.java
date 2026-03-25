@@ -1,11 +1,14 @@
 package com.example.ejemplos;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -29,6 +32,7 @@ import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import com.example.test.annotation.Smoke;
 import com.example.test.utils.PrivateMethod;
@@ -169,6 +173,49 @@ class CalculadoraTest {
 
 		}
 
+	}
+
+	@Nested
+	@DisplayName("Método esBisiesto")
+	@Order(40)
+	class EsBisiesto {
+		@ParameterizedTest(name = "Caso {index} => {0} es bisiento")
+		@ValueSource(ints = {2024, 2000})
+		void es_bisiesto(int caso) {
+			assertTrue(calculadora.esBisiesto(caso));
+		}
+		@ParameterizedTest(name = "Caso {index} => {0} es bisiento")
+		@ValueSource(ints = {2026, 1900})
+		void no_es_bisiesto(int caso) {
+			assertFalse(calculadora.esBisiesto(caso));
+		}
+
+//		@Test
+//		void es_multiplo_de_4_y_no_es_multiplo_de_100() {
+//			var caso = 2024;
+//			
+//			assertTrue(calculadora.esBisiesto(caso));
+//		}
+//		@Test
+//		void es_multiplo_de_4_y_no_es_multiplo_de_100_o_es_multiplo_de_400() {
+//			var caso = 2000;
+//			
+//			assertTrue(calculadora.esBisiesto(caso));
+//		}
+//		@Test
+//		void no_es_multiplo_de_4() {
+//			var caso = 2026;
+////			var calculadora = mock(Calculadora.class);
+////			when(calculadora.esBisiesto(2026)).thenReturn(false);
+//			assertFalse(calculadora.esBisiesto(caso));
+//		}
+//		@Test
+//		void es_multiplo_de_4_y_es_multiplo_de_100() {
+//			var caso = 1900;
+////			var calculadora = mock(Calculadora.class);
+////			when(calculadora.esBisiesto(1900)).thenReturn(false);
+//			assertFalse(calculadora.esBisiesto(caso));
+//		}
 	}
 
 	@Nested
