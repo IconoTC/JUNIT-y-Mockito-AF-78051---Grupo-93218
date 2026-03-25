@@ -59,5 +59,7 @@ public class Persona {
 		return id == other.id;
 	}
 	
-	
+	public boolean isValid() {
+		return nombre != null && !nombre.isBlank() && nombre.length() <= 50;
+	}
 }
