@@ -8,7 +8,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.lang.reflect.InvocationTargetException;
@@ -35,6 +40,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.MockedStatic;
 
 import com.example.test.annotation.Smoke;
 import com.example.test.utils.PrivateMethod;
@@ -256,18 +262,58 @@ class CalculadoraTest {
 			}
 			return testBattery;
 		}
-		
+
+		@Test
+		@DisplayName("Ejemplos mockito")
+		void simulaciones() {
+			var calculadora = mock(Calculadora.class);
+//			when(calculadora.suma(anyInt(), anyInt())).thenReturn(1).thenReturn(2).thenReturn(33);
+//			when(calculadora.suma(2, 2)).thenReturn(5);
+//			when(calculadora.suma(2, 3)).thenReturn(3);
+//			when(calculadora.suma(2, 2)).thenReturn(5);
+//			when(calculadora.suma(intThat(arg -> arg < 2), anyInt())).thenReturn(2);
+//			when(calculadora.suma(intThat(arg -> arg > 1), anyInt())).thenReturn(55);
+//			when(calculadora.suma(anyInt(), anyInt())).thenAnswer(new Answer<Integer>() {
+//				private int count = 0;
+//				@Override
+//				public Integer answer(InvocationOnMock invocation) throws Throwable {
+//					return ++count;
+//				}
+//			});
+//			when(calculadora.suma(anyInt(), anyInt())).thenAnswer(answer -> answer.getArgument(0));
+			when(calculadora.suma(anyInt(), anyInt())).thenThrow(ArithmeticException.class);
+			assertThrows(Exception.class, () -> assertEquals(1, calculadora.suma(1, 2)));
+//			assertEquals(2, calculadora.suma(1, 2));
+//			assertEquals(3, calculadora.suma(1, 2));
+//			assertEquals(4, calculadora.suma(1, 2));
+//			assertEquals(5, calculadora.suma(1, 2));
+
+//			assertEquals(1, calculadora.suma(1, 2));
+//			assertEquals(2, calculadora.suma(1, 2));
+//			assertEquals(33, calculadora.suma(1, 2));
+//			assertEquals(33, calculadora.suma(1, 2));
+//			assertEquals(33, calculadora.suma(1, 2));
+//			assertEquals(5, calculadora.suma(2, 2));
+//			assertEquals(3, calculadora.suma(2, 3));
+			verify(calculadora, times(1)).suma(1, 2);
+		}
+
 		@Test
 		@DisplayName("Probar métodos no determinista")
-		@Disabled
+//		@Disabled
 		void tempodependiente() {
-			int edad = 25; 
+			int edad = 19; 
 			var nacimiento = LocalDate.of(2000, 3, 25);
-			assertAll("Edades",
-					() -> assertEquals(edad, calculadora.edad(nacimiento.plusDays(1)), "aun no ha cumplido años"),
-					() -> assertEquals(edad + 1, calculadora.edad(nacimiento), "hoy cumple años"),
-					() -> assertEquals(edad + 1, calculadora.edad(nacimiento.minusDays(1)), "ya ha cumplido años")
-					);
+			var hoy = LocalDate.of(2020, 3, 25);
+			try (MockedStatic<LocalDate> mocked = mockStatic(LocalDate.class, CALLS_REAL_METHODS)) {
+				mocked.when(LocalDate::now).thenReturn(hoy);
+
+				assertAll("Edades",
+						() -> assertEquals(edad, calculadora.edad(nacimiento.plusDays(1)), "aun no ha cumplido años"),
+						() -> assertEquals(edad + 1, calculadora.edad(nacimiento), "hoy cumple años"),
+						() -> assertEquals(edad + 1, calculadora.edad(nacimiento.minusDays(1)), "ya ha cumplido años")
+						);
+			}
 		}
 	}
 }
