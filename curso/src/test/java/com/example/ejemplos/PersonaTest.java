@@ -19,26 +19,26 @@ class PersonaTest {
 	@Test
 	@Smoke
 	void Crear_Persona() {
-		var actual = new Persona(0, "Pepito", "Grillo", null);
+		var actual = new Persona(1, "Pepito", "Grillo", null);
 		
 		// assertEquals(new Persona(0, "Pepito", "Grilloooo", null), actual);
 		assertNotNull(actual);
 		assertAll("Persona", 
-				() -> assertEquals(0, actual.getId()),
+				() -> assertEquals(1, actual.getId()),
 				() -> assertEquals("Pepito", actual.getNombre(), "nombre"),
 				() -> assertEquals("Grillo", actual.getApellidos(), "apellidos"),
 				() -> assertNull(actual.getFNacimiento())
 				);
 		// hamcrest
 		assertThat(actual, allOf(
-				hasProperty("id", greaterThanOrEqualTo(0)),
+				hasProperty("id", greaterThanOrEqualTo(1)),
 				hasProperty("nombre", equalTo("Pepito")),
 				hasProperty("apellidos", equalTo("Grillo")),
 				hasProperty("FNacimiento", nullValue())));
 		// assertj
 		org.assertj.core.api.Assertions.assertThat(actual)
 			.isNotNull()
-			.hasFieldOrPropertyWithValue("id", 0)
+			.hasFieldOrPropertyWithValue("id", 1)
 			.hasFieldOrPropertyWithValue("nombre", "Pepito")
 			.hasFieldOrPropertyWithValue("apellidos", "Grillo")
 			.hasFieldOrPropertyWithValue("FNacimiento", null)
