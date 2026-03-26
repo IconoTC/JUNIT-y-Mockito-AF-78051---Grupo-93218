@@ -9,7 +9,6 @@ public class PersonaServiceImpl implements PersonaService {
 	private PersonasRepository dao;
 	
 	public PersonaServiceImpl(PersonasRepository dao) {
-		super();
 		this.dao = dao;
 	}
 
