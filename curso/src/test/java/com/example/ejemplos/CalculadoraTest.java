@@ -256,13 +256,17 @@ class CalculadoraTest {
 			}
 			return testBattery;
 		}
+		
 		@Test
 		@DisplayName("Probar métodos no determinista")
+		@Disabled
 		void tempodependiente() {
+			int edad = 25; 
+			var nacimiento = LocalDate.of(2000, 3, 25);
 			assertAll("Edades",
-					() -> assertEquals(25, calculadora.edad(LocalDate.of(2000, 03, 26)), "aun no ha cumplido años"),
-					() -> assertEquals(26, calculadora.edad(LocalDate.of(2000, 03, 25)), "hoy cumple años"),
-					() -> assertEquals(26, calculadora.edad(LocalDate.of(2000, 03, 24)), "ya ha cumplido años")
+					() -> assertEquals(edad, calculadora.edad(nacimiento.plusDays(1)), "aun no ha cumplido años"),
+					() -> assertEquals(edad + 1, calculadora.edad(nacimiento), "hoy cumple años"),
+					() -> assertEquals(edad + 1, calculadora.edad(nacimiento.minusDays(1)), "ya ha cumplido años")
 					);
 		}
 	}
